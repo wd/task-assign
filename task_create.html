@@ -1,0 +1,101 @@
+<div ng-controller="CreateCtrl">
+    <form class="form-horizontal" role="form">
+        <div id="legend" class="">
+            <legend class="">Create Task</legend>
+        </div>
+        <div class="form-group">
+            <label for="taskname" class="col-sm-2 control-label">Task Name</label>
+            <div class="col-sm-5">
+                <div class="input-group">
+                    <input type="text" class="form-control" value="{{currentTask.name}}">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li ng-repeat="task in tasks"><a ng-click="selectTask(task)">{{task.no}} - {{task.name}}</a></li>
+                        </ul>
+                    </div><!-- /btn-group -->
+                </div><!-- /input-group -->
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="taskno" class="col-sm-2 control-label">Task NO.</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" placeholder="" value="{{currentTask.no}}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="pm" class="col-sm-2 control-label">PM</label>
+            <div class="col-sm-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" value="{{currentTask.pm}}">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li ng-repeat="pm in pms"><a ng-click="selectPM(pm)">{{pm.name}}</a></li>
+                        </ul>
+                    </div><!-- /btn-group -->
+                </div><!-- /input-group -->
+            </div>
+        </div>
+        <div class="form-group form-inline">
+            <label for="assignto" class="col-sm-2 control-label">Assign To</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="text" name="test" class="form-control" ng-required="true" ng-model="assignTo.name" ng-model-options="{ getterSetter: true }">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li ng-repeat="people in peoples"><a ng-click="selectAssignTo(people)">{{people.name}}</a></li>
+                        </ul>
+                    </div><!-- /btn-group -->
+                </div><!-- /input-group -->
+                <label for="startfrom" class="control-label">Start From</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" datepicker-popup="{{dpFormat}}" ng-model="dtStart" is-open="dpStartOpened" min-date="dpStartMinDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="dateDisabled(date, mode)" ng-required="true" close-text="Close" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="dpStartOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+                <label for="dueto" class="control-label">Due To</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" datepicker-popup="{{dpFormat}}" ng-model="dtEnd" is-open="dpEndOpened" min-date="dpEndMinDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="dateDisabled(date, mode)" ng-required="true" close-text="Close" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="dpEndOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+                <div class="input-group">
+                    <button class="btn btn-success" ng-click="addToAssigned()">Add</button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="panel panel-default col-md-10 col-md-offset-2">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Assignments</div>
+
+                <!-- Table -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Assign TO</th>
+                            <th>Start From</th>
+                            <th>Due To</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="assigned in hasAssigned">
+                        <tr>
+                            <td>{{assigned.people}}</td>
+                            <td>{{assigned.startFrom}}</td>
+                            <td>{{assigned.dueTo}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-2">
+                <button class="btn btn-success">Save task</button>
+            </div>
+        </div>
+    </form>
+</div>

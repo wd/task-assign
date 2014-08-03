@@ -1,0 +1,68 @@
+<!-- Main component for a primary marketing message or call to action -->
+<div ng-controller="ListCtrl">
+    <form class="form-inline row" role="form">
+        <div class="form-group col-md-4 ">
+            <div class="input-group">
+                <label for="enddate" class="control-label">Start Date</label>
+            </div>
+            <div class="input-group col-md-8">
+                <input type="text" class="form-control" datepicker-popup="{{dpFormat}}" ng-model="dtStart" is-open="dpStartOpened" min-date="dpStartMinDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="dateDisabled(date, mode)" ng-required="true" close-text="Close" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="dpStartOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            <div class="input-group">
+                <label for="enddate" class="control-label">End Date</label>
+            </div>
+            <div class="input-group col-md-8">
+                <input type="text" class="form-control" datepicker-popup="{{dpFormat}}" ng-model="dtEnd" is-open="dpEndOpened" min-date="dpEndMinDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="dateDisabled(date, mode)" ng-required="true" close-text="Close" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="dpEndOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group col-md-2">
+            <button class="btn btn-success" ng-click="filterTasks()">Search</button>
+        </div>
+    </form>
+    <div class=""></div>
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Assignments</div>
+        <div class="panel-body">
+            <p>{{updateTaskSummary()}}Total {{summary.task}} tasks, {{summary.people}} people, {{summary.days}} days</p>
+        </div>
+
+        <!-- Table -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Task Name</th>
+                    <th>PM</th>
+                    <th>Assign TO</th>
+                    <th>Start From</th>
+                    <th>Due To</th>
+                    <th>QA Time</th>
+                    <th>Release Time</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="task in filteredTasks">
+                <tr>
+                    <td>{{task.no}}</td>
+                    <td>{{task.name}}</td>
+                    <td>{{task.pm}}</td>
+                    <td>{{task.assignTo}}</td>
+                    <td>{{task.startFrom}}</td>
+                    <td>{{task.dueTo}}</td>
+                    <td>{{task.qaDate}}</td>
+                    <td>{{task.releaseDate}}</td>
+                    <td>{{task.notes}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
