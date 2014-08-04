@@ -103,16 +103,7 @@ angular.module('taskAssignments', ['ngRoute', 'ui.bootstrap'])
         $scope.peoples = [{ name: '王冬' }, { name: '测试' }, { name: '还是测试' } ];
         $scope.pms = [{ name: '王冬'}, {name: '测试'}];
         $scope.currentTask = {no: '', name: '', pm: ''};
-        var _name = 'test';
-        $scope.assignTo = {
-            name: function(newName) {
-                if ( angular.isDefined(newName) ) {
-                    _name = newName;
-                }
-                return _name;
-            }
-        };
-        $scope.abc = 1;
+        $scope.assignTo = { id: null, name: 'test' };
 
         $scope.hasAssigned = [
             { people: '王冬', dueTo: '2014-08-09', startFrom: '2014-08-10' },
@@ -157,12 +148,12 @@ angular.module('taskAssignments', ['ngRoute', 'ui.bootstrap'])
         };
 
         $scope.selectAssignTo = function(people) {
-            $scope.assignTo.name( people.name );
+            $scope.assignTo.name = people.name;
         };
 
         $scope.addToAssigned = function() {
             var tmp = {
-                people: $scope.assignTo.name(),
+                people: $scope.assignTo.name,
                 startFrom: $scope.dtStart.toString("yyyy-MM-dd"),
                 dueTo: $scope.dtEnd.toString("yyyy-MM-dd")
             };
