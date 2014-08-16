@@ -1,17 +1,6 @@
 //'use strict';
 
-angular.module('taskAssignments', ['ngRoute', 'ui.bootstrap'])
-    .factory('utils', function() {
-        return {
-            dateStrDiff: function( d1, d2 ) {
-                var date1 = new Date(d1),
-                    date2 = new Date(d2),
-                    datediff = date1.getTime() - date2.getTime();
-                return (datediff / (24*60*60*1000));
-            }
-        };
-    })
-
+var Myapp = angular.module('taskAssignments', ['ngRoute', 'ui.bootstrap'])
     .controller('navCtrl', function($scope, $route, $routeParams, $location) {
         $scope.isActive = function (viewLocation) {
             var active = (viewLocation === $location.path());
@@ -94,7 +83,7 @@ angular.module('taskAssignments', ['ngRoute', 'ui.bootstrap'])
         };
     }])
 
-    .controller('CreateCtrl', function($scope, $route, $routeParams, $location) {
+    .controller('CreateCtrl', function($scope, remote, $http, utils, $q) {
         $scope.tasks = [
             { no: 'Q-T-2345', name: 'just a test task', pm: '王冬', assignTo: '王冬', startFrom: '2014-08-03', dueTo: '2014-08-09', qaDate: '2014-08-06', releaseDate: '2014-08-06', notes: '' },
             { no: '', name: 'just an test task', pm: '王冬', assignTo: '王冬', startFrom: '2014-08-03', dueTo: '2014-08-09', qaDate: '2014-08-06', releaseDate: '2014-08-06', notes: '' }
@@ -103,12 +92,16 @@ angular.module('taskAssignments', ['ngRoute', 'ui.bootstrap'])
         $scope.peoples = [{ name: '王冬' }, { name: '测试' }, { name: '还是测试' } ];
         $scope.pms = [{ name: '王冬'}, {name: '测试'}];
         $scope.currentTask = {no: '', name: '', pm: ''};
-        $scope.assignTo = { id: null, name: 'test' };
+        $scope.assignTo = {};
 
         $scope.hasAssigned = [
             { people: '王冬', dueTo: '2014-08-09', startFrom: '2014-08-10' },
             { people: '王冬', dueTo: '2014-08-09', startFrom: '2014-08-10' }
         ];
+
+        remote.getPeoples().then( function(resp) {
+            $scope.peoples = utils.checkResp(resp);
+        });
 
         $scope.dateOptions = {
             formatYear: 'yy',
@@ -152,13 +145,17 @@ angular.module('taskAssignments', ['ngRoute', 'ui.bootstrap'])
         };
 
         $scope.addToAssigned = function() {
-            var tmp = {
-                people: $scope.assignTo.name,
-                startFrom: $scope.dtStart.toString("yyyy-MM-dd"),
-                dueTo: $scope.dtEnd.toString("yyyy-MM-dd")
-            };
+            if ( $scope.dtStart && $scope.dtEnd && $scope.assignTo ) {
+                var tmp = {
+                    people: $scope.assignTo.name,
+                    startFrom: $scope.dtStart.toString("yyyy-MM-dd"),
+                    dueTo: $scope.dtEnd.toString("yyyy-MM-dd")
+                };
 
-            $scope.hasAssigned.push(tmp);
+                $scope.hasAssigned.push(tmp);
+            } else {
+                
+            }
         };
     })
     .config(function($routeProvider, $locationProvider) {
