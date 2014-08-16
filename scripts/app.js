@@ -83,7 +83,7 @@ var Myapp = angular.module('taskAssignments', ['ngRoute', 'ui.bootstrap'])
         };
     }])
 
-    .controller('CreateCtrl', function($scope, remote, $http, utils, $q) {
+    .controller('CreateCtrl', function($scope, remote, $http, utils) {
         $scope.tasks = [
             { no: 'Q-T-2345', name: 'just a test task', pm: '王冬', assignTo: '王冬', startFrom: '2014-08-03', dueTo: '2014-08-09', qaDate: '2014-08-06', releaseDate: '2014-08-06', notes: '' },
             { no: '', name: 'just an test task', pm: '王冬', assignTo: '王冬', startFrom: '2014-08-03', dueTo: '2014-08-09', qaDate: '2014-08-06', releaseDate: '2014-08-06', notes: '' }
@@ -154,8 +154,11 @@ var Myapp = angular.module('taskAssignments', ['ngRoute', 'ui.bootstrap'])
 
                 $scope.hasAssigned.push(tmp);
             } else {
-                
+                //tips msg
             }
+        };
+
+        $scope.saveAll = function() {
         };
     })
     .config(function($routeProvider, $locationProvider) {
