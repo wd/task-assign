@@ -8,7 +8,7 @@ Myapp.factory('utils', function() {
             },
             getUrl: function( url ) {
                 var callback = '?' + (callback || '_c' ) + '=JSON_CALLBACK',
-                    baseUrl = window.baseUrl || '/';
+                    baseUrl = window.baseUrl.match(/\/$/) ? window.baseUrl : window.baseUrl + '/' || '/';
                 return baseUrl + url + callback;
             },
             checkResp: function(resp) {
@@ -26,7 +26,8 @@ Myapp.factory('utils', function() {
     .factory('remote', function($http, utils) {
         return {
             getPeoples: function() {
-                return $http.jsonp(utils.getUrl('task/getpeoples'));
+                var url = utils.getUrl('task/getpeoples');
+                return $http.jsonp(url);
             }
         };
     });

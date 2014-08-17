@@ -89,7 +89,6 @@ var Myapp = angular.module('taskAssignments', ['ngRoute', 'ui.bootstrap'])
             { no: '', name: 'just an test task', pm: '王冬', assignTo: '王冬', startFrom: '2014-08-03', dueTo: '2014-08-09', qaDate: '2014-08-06', releaseDate: '2014-08-06', notes: '' }
         ];
 
-        $scope.peoples = [{ name: '王冬' }, { name: '测试' }, { name: '还是测试' } ];
         $scope.pms = [{ name: '王冬'}, {name: '测试'}];
         $scope.currentTask = {no: '', name: '', pm: ''};
         $scope.assignTo = {};
