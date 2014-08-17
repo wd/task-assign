@@ -28,6 +28,16 @@ Myapp.factory('utils', function() {
             getPeoples: function() {
                 var url = utils.getUrl('task/getpeoples');
                 return $http.jsonp(url);
+            },
+            saveTask: function(task, hasAssigned) {
+                var url = utils.getUrl('task/savetask');
+                return $http.jsonp(url, {
+                    data: { task: task, hasAssigned: hasAssigned }
+                });
+            },
+            getPMs: function() {
+                var url = utils.getUrl('task/getpms');
+                return $http.jsonp(url);
             }
         };
     });

@@ -1,46 +1,48 @@
 <div>
-    <form class="form-horizontal" role="form" name="taskForm">
-        <div id="legend" class="">
-            <legend class="">Create Task</legend>
-        </div>
-        <div class="form-group">
-            <label for="taskname" class="col-sm-2 control-label">Task Name</label>
-            <div class="col-sm-5">
-                <div class="input-group">
-                    <input type="text" class="form-control" value="{{currentTask.name}}" ng-required="true" >
-                    <div class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                            <li ng-repeat="task in tasks"><a ng-click="selectTask(task)">{{task.no}} - {{task.name}}</a></li>
-                        </ul>
-                    </div><!-- /btn-group -->
-                </div><!-- /input-group -->
+    <form class="form-horizontal" role="form" name="mainForm">
+        <ng-form name="taskForm" ng-class="taskFormStyle" role="form">
+            <div id="legend" class="">
+                <legend class="">Create Task</legend>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="taskno" class="col-sm-2 control-label">Task NO.</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" placeholder="" value="{{currentTask.no}}" ng-required="true" >
+            <div class="form-group">
+                <label for="taskname" class="col-sm-2 control-label">Task Name</label>
+                <div class="col-sm-5">
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="currentTask.name" ng-required="true" >
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                <li ng-repeat="task in tasks"><a ng-click="selectTask(task)">{{task.no}} - {{task.name}}</a></li>
+                            </ul>
+                        </div><!-- /btn-group -->
+                    </div><!-- /input-group -->
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="pm" class="col-sm-2 control-label">PM</label>
-            <div class="col-sm-2">
-                <div class="input-group">
-                    <input type="text" class="form-control" value="{{currentTask.pm}}" ng-required="true">
-                    <div class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                            <li ng-repeat="pm in pms"><a ng-click="selectPM(pm)">{{pm.name}}</a></li>
-                        </ul>
-                    </div><!-- /btn-group -->
-                </div><!-- /input-group -->
+            <div class="form-group">
+                <label for="taskno" class="col-sm-2 control-label">Task NO.</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" placeholder="" ng-model="currentTask.no" ng-required="true" >
+                </div>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="pm" class="col-sm-2 control-label">PM</label>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="currentTask.pm.name" ng-required="true">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                <li ng-repeat="pm in pms"><a ng-click="selectPM(pm)">{{pm.name}}</a></li>
+                            </ul>
+                        </div><!-- /btn-group -->
+                    </div><!-- /input-group -->
+                </div>
+            </div>
+        </ng-form>
         <div class="form-group form-inline">
             <label for="assignto" class="col-sm-2 control-label">Assign To</label>
             <div class="col-sm-10">
-                <ng-form name="assignForm" role="form" >
+                <ng-form name="assignForm" role="form" ng-class="assignFormStyle">
                     <div class="input-group">
                         <input type="text" class="form-control" ng-model="assignTo.name" ng-required="true" >
                         <div class="input-group-btn">
@@ -52,14 +54,14 @@
                     </div><!-- /input-group -->
                     <label for="startfrom" class="control-label">Start From</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" datepicker-popup="{{dpFormat}}" ng-model="dtStart" is-open="dpStartOpened" min-date="dpStartMinDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="dateDisabled(date, mode)" close-text="Close" ng-required="true" />
+                        <input type="text" class="form-control" datepicker-popup="{{dpFormat}}" ng-model="dtStart" is-open="dpStartOpened" min-date="dpStartMinDate" datepicker-options="dateOptions" date-disabled="dateDisabled(date, mode)" close-text="Close" ng-required="true" />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="dpStartOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
                     </div>
                     <label for="dueto" class="control-label">Due To</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" datepicker-popup="{{dpFormat}}" ng-model="dtEnd" is-open="dpEndOpened" min-date="dpEndMinDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="dateDisabled(date, mode)" close-text="Close" ng-required="true" />
+                        <input type="text" class="form-control" datepicker-popup="{{dpFormat}}" ng-model="dtEnd" is-open="dpEndOpened" min-date="dpEndMinDate" datepicker-options="dateOptions" date-disabled="dateDisabled(date, mode)" close-text="Close" ng-required="true" />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="dpEndOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
@@ -86,7 +88,7 @@
                     </thead>
                     <tbody ng-repeat="assigned in hasAssigned">
                         <tr>
-                            <td>{{assigned.people}}</td>
+                            <td>{{assigned.people.name}}</td>
                             <td>{{assigned.startFrom}}</td>
                             <td>{{assigned.dueTo}}</td>
                         </tr>
@@ -96,7 +98,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-10 col-sm-offset-2">
-                <button type="submit" class="btn btn-success" ng-click="saveAll()">Save task</button>
+                <button type="button" class="btn btn-success" ng-click="saveAll()">Save task</button>
             </div>
         </div>
     </form>
