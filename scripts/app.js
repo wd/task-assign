@@ -7,13 +7,11 @@ var Myapp = angular.module('taskAssignments', ['ngRoute', 'ui.bootstrap'])
             return active;
         };
     })
-    .controller('ListCtrl', [ '$scope', 'utils', function($scope, utils) {
-        $scope.tasks = [
-            { no: 'Q-T-2345', name: 'just a test task', pm: '王冬', assignTo: '王冬', startFrom: '2014-08-03', dueTo: '2014-08-09', qaDate: '2014-08-06', releaseDate: '2014-08-06', notes: '' },
-            { no: '', name: 'just an test task', pm: '王冬', assignTo: '王冬', startFrom: '2014-08-13', dueTo: '2014-08-23', qaDate: '2014-08-06', releaseDate: '2014-08-06', notes: '' }
-        ];
-
-        $scope.filteredTasks = angular.copy($scope.tasks);
+    .controller('ListCtrl', [ '$scope', 'utils', 'remote', function($scope, utils, remote) {
+        remote.getTasks().then( function(resp) {
+            $scope.tasks = utils.checkResp(resp);
+            $scope.filteredTasks = angular.copy($scope.tasks);
+        });
 
         $scope.summary = { task: 0, people: 0, days: 0 };
 
@@ -45,12 +43,12 @@ var Myapp = angular.module('taskAssignments', ['ngRoute', 'ui.bootstrap'])
 
         $scope.dpFormat = 'yyyy-MM-dd';
 
-        $scope.updateTaskSummary = function() {
+        $scope.$watch('filteredTasks', function() {
             var totalPeople = {},
                 totalDays = 0,
                 totalTask = {},
                 i = 0,
-                totalTaskCount = $scope.filteredTasks.length;
+                totalTaskCount = $scope.filteredTasks ? $scope.filteredTasks.length : 0;
 
 
             for ( i =0 ; i < totalTaskCount; i++ ) {
@@ -65,7 +63,7 @@ var Myapp = angular.module('taskAssignments', ['ngRoute', 'ui.bootstrap'])
                 people: Object.keys( totalPeople ).length,
                 days: totalDays
             };
-        };
+        });
 
         $scope.filterTasks = function() {
             $scope.filteredTasks = [];
@@ -84,19 +82,16 @@ var Myapp = angular.module('taskAssignments', ['ngRoute', 'ui.bootstrap'])
     }])
 
     .controller('CreateCtrl', function($scope, remote, $http, utils) {
-        $scope.tasks = [
-            { id: 1, no: 'Q-T-2345', name: 'just a test task', pm: { id:1, name: '王冬' }, assignTo: { id:1, name: '王冬' }, startFrom: '2014-08-03', dueTo: '2014-08-09', qaDate: '2014-08-06', releaseDate: '2014-08-06', notes: '' },
-            { id: 2, no: '', name: 'just an test task', pm: { id:1, name:'王冬'} , assignTo: { id: 1, name: '王冬' }, startFrom: '2014-08-03', dueTo: '2014-08-09', qaDate: '2014-08-06', releaseDate: '2014-08-06', notes: '' }
-        ];
+        remote.getTasks().then( function(resp) {
+            $scope.tasks = utils.checkResp(resp);
+        });
 
-        $scope.pms = [{ id:1, name: '王冬'}, {id:2, name: '测试'}];
+        remote.getPMs().then( function(resp) {
+            $scope.pms = utils.checkResp(resp);
+        });
+
         $scope.currentTask = { no: '', name: '', pm:  {} };
         $scope.assignTo = {};
-
-        $scope.hasAssigned = [
-            { people: { id:1, name: '王冬' }, dueTo: '2014-08-09', startFrom: '2014-08-10' },
-            { people: { id:2, name: '王冬' }, dueTo: '2014-08-09', startFrom: '2014-08-10' }
-        ];
 
         remote.getPeoples().then( function(resp) {
             $scope.peoples = utils.checkResp(resp);
@@ -133,6 +128,9 @@ var Myapp = angular.module('taskAssignments', ['ngRoute', 'ui.bootstrap'])
 
         $scope.selectTask = function(task) {
             $scope.currentTask = { id: task.id, no: task.no, name: task.name, pm: task.pm};
+            remote.getHasAssigned( task.id ).then( function(resp) {
+                $scope.hasAssigned = utils.checkResp(resp);
+            });
         };
 
         $scope.selectPM = function(pm) {

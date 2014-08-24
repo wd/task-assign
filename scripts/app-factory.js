@@ -38,6 +38,14 @@ Myapp.factory('utils', function() {
             getPMs: function() {
                 var url = utils.getUrl('task/getpms');
                 return $http.jsonp(url);
+            },
+            getTasks: function() {
+                var url = utils.getUrl('task/gettasks');
+                return $http.jsonp(url);
+            },
+            getHasAssigned: function(taskId) {
+                var url = utils.getUrl('task/gethasassigned', { taskid: taskId });
+                return $http.jsonp(url);
             }
         };
     });
